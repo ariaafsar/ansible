@@ -1,0 +1,15 @@
+---
+
+- hosts: all
+  become: true
+  tasks:
+  
+  - name: Remove Docker
+    apt:
+      name:
+        - docker-ce
+        - docker-ce-cli
+        - containerd.io
+        - docker-buildx-plugin
+        - docker-compose-plugin
+      state: absent

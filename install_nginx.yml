@@ -1,0 +1,13 @@
+---
+
+- hosts: all
+  become: true
+  tasks : 
+  - name: Update Packages
+    apt:
+      update_cache: yes
+
+  - name: Install Nginx
+    apt:
+      name: nginx
+      state: latest
