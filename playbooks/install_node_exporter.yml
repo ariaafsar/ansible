@@ -1,0 +1,58 @@
+---
+  
+- hosts: all
+  become: true
+  tasks:
+
+    - name: Create a user for Node Exporter
+      user:
+        name: node_exporter
+        shell: /bin/false
+
+    - name: Download Node Exporter binary
+      get_url:
+        url: https://github.com/prometheus/node_exporter/releases/download/v1.3.1/node_exporter-1.3.1.linux-amd64.tar.gz
+        dest: /tmp/node_exporter.tar.gz
+
+    - name: Extract Node Exporter
+      unarchive:
+        src: /tmp/node_exporter.tar.gz
+        dest: /usr/local/bin/
+        remote_src: yes
+        creates: /usr/local/bin/node_exporter-1.3.1.linux-amd64
+
+    - name: Move Node Exporter binary
+      command: mv /usr/local/bin/node_exporter-1.3.1.linux-amd64/node_exporter /usr/local/bin/
+      args:
+        creates: /usr/local/bin/node_exporter
+
+    - name: Create Node Exporter service file
+      copy:
+        dest: /etc/systemd/system/node_exporter.service
+        content: |
+          [Unit]
+          Description=Node Exporter
+          After=network.target
+
+          [Service]
+          User=node_exporter
+          ExecStart=/usr/local/bin/node_exporter
+          Restart=always
+
+          [Install]
+          WantedBy=default.target
+
+    - name: Reload systemd
+      command: systemctl daemon-reload
+
+    - name: Enable Node Exporter service
+      systemd:
+        name: node_exporter
+        enabled: yes
+        state: started
+
+    - name: Clean up
+      file:
+        path: /tmp/node_exporter.tar.gz
+        state: absent
+
