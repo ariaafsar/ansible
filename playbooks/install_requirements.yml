@@ -1,0 +1,18 @@
+---
+
+- hosts: all
+  become: true
+  tasks:
+
+    - name: Update Packages
+      apt:
+        update_cache: yes
+
+    - name: Install Required Packages
+      apt:
+        name:
+          - git
+          - vim
+          - tree
+          - net-tools
+        state: latest
