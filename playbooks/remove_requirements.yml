@@ -1,0 +1,14 @@
+---
+
+- hosts: all
+  become: true
+  tasks:
+
+    - name: Remove Packages
+      apt:
+        name:
+          - git
+          - vim
+          - tree
+          - net-tools
+        state: absent
