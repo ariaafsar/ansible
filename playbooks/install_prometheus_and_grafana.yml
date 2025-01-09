@@ -1,0 +1,29 @@
+---
+
+- hosts: all
+  become: true
+  tasks:
+    
+    - name: Update Packages
+      apt:
+        update_cache: yes
+
+    - name: Create Monitoring Directory
+      file:
+        path: ~/monitoring
+        state: directory
+
+    - name: Create Dcoker Compose File
+      copy:
+        src: monitoring/docker-compose.yml
+        dest: ~/monitoring/docker-compose.yml
+   
+    - name: Create Prometheus Config File
+      copy:
+        src: /monitoring/prometheus.yml
+        dest: ~/monitoring/prometheus.yml
+
+    - name: Run Prometheus and Grafana
+      command: docker compose up -d
+      args:
+        chdir: /monitoring
