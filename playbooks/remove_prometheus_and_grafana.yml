@@ -1,0 +1,15 @@
+---
+
+- hosts: all
+  become: true 
+  tasks:
+    - name: Stop Docker Contaiiners
+      command: docker compose down
+      args: 
+      chdir: /monitoring
+
+    - name: Remove All Config Files 
+      file:
+        path: /monitoring
+        state: absent
+        force: yes
