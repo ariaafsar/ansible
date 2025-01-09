@@ -1,0 +1,24 @@
+---
+
+- hosts: all 
+  become: true
+  tasks: 
+
+    - name: Update Packages
+      apt:
+        update_cache: yes
+
+    - name: Create a Directory for Docker Compose File
+      file: 
+        path: ~/docker_registry
+        state: directory
+
+    - name: Create a Docker Compose File
+      copy:
+        src: Dcoker_registry/docker-compose.yml
+        dest: ~/docker_registry/docker-compose.yml
+
+    - name: Run Docker Compose
+      command: docker compose up -d 
+      args: 
+        chdir: /docker_registry
