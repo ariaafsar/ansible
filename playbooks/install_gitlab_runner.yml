@@ -1,0 +1,24 @@
+---
+
+- hosts: all
+  become: true
+  tasks: 
+
+    - name: Update Packages
+      apt:
+        update_cache: yes
+        upgrade: dist
+
+    - name: Add Gitlab Runner Registry
+      shell: curl -L "https://packages.gitlab.com/install/repositories/runner/gitlab-runner/script.deb.sh" | sudo
+
+    - name: Install Gitlab Runner
+      apt:
+        name: gitlab-runner
+        state: latest
+
+    - name: Start And Enable Gitlab Runner
+      service :
+        name: gitlab-runner
+        state: started
+        enabled: yes
