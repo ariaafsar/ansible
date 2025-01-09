@@ -1,0 +1,16 @@
+---
+
+- hosts: all
+  become: true
+  tasks: 
+
+    - name: Stop Docker container
+      command: docker compose down
+      args: 
+      - chdir: /docker_registry
+
+    - name: Remove Config Files
+      file: 
+        path: /docker_registry
+        state: absent
+        force: yes
