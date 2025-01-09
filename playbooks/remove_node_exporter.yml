@@ -1,0 +1,25 @@
+---
+
+- hosts: all 
+  become: true 
+  tasks: 
+    - name: Stop Node Exporter Service
+      systemd:
+        name: node_exporter 
+        state: stoped
+        enabled: no
+
+    - name: Remove Node Exporter Binary
+      file:
+        path: /usr/local/bin/node_exporter
+        state: absent
+
+    - name: Remove Node Exporter Service File
+      file:
+        path: /etc/systemd/system/node_exporter.service
+        state: absent
+    
+    - name: Reload Systemd
+      command: systemctl daemon-reload
+      args:
+        warn: no 
