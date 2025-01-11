@@ -1,0 +1,16 @@
+---
+
+- hosts : all
+  become: true
+  tasks: 
+    
+    - name: Stop Docker Container
+      command: docker compose down 
+      args:
+        chdir: ~/gitlab_docker
+
+    - name: Delete Directory For Gitlab_ce
+      file:
+        path: ~/gitlab_docker
+        state: absent
+        force: yes
