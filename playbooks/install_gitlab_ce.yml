@@ -1,0 +1,23 @@
+---
+
+- hosts : all
+  become: true
+  tasks: 
+    - name: Update Packages
+      apt:
+        update_cache: yes
+
+    - name: Making a Directory For Gitlab_ce
+      file:
+        path: ~/gitlab_docker
+        state: directory
+
+    - name: Create a Docker File For Gitlab_ce 
+      copy:
+        src: gitlab_ce/docker-compose.yml
+        dest: ~/gitlab_docker/docker-compose.yml
+
+    - name: Run Docker Compose
+      command: docker compose up -d
+      arg:
+        chdir: ~/gitlab_docker
