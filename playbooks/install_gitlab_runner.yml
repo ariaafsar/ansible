@@ -10,7 +10,7 @@
         upgrade: dist
 
     - name: Add Gitlab Runner Registry
-      shell: curl -L "https://packages.gitlab.com/install/repositories/runner/gitlab-runner/script.deb.sh" | sudo
+      shell: curl -L "https://packages.gitlab.com/install/repositories/runner/gitlab-runner/script.deb.sh" | sudo bash
 
     - name: Install Gitlab Runner
       apt:
